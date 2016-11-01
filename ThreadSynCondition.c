@@ -46,7 +46,7 @@ void Put(struct producer *b, int data)
 	
 	b->buffer[b->wpos++] = data;
 
-	if(b->wpos >= SIZE) 
+	if(b->wpos >= SIZE)
 		b->wpos = 0;
 	
 	pthread_cond_signal(&b->notempty);	//·¢ËÍnotemptyÐÅºÅ
