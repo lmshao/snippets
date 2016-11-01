@@ -1,3 +1,4 @@
 #!/bin/sh
-gcc -o MultithreadingMutex MultithreadingMutex.c -lpthread
-gcc -o MultithreadingCondition MultithreadingCondition.c -lpthread
+gcc -o ThreadSynCondition ThreadSynCondition.c -lpthread
+gcc -o ThreadSynMutex ThreadSynMutex.c -lpthread
+gcc -o ThreadSynSemaphore ThreadSynSemaphore.c -lpthread
