@@ -1,143 +1,81 @@
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <errno.h>
-#include <netdb.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <string.h>
-#include <stdlib.h>
+/*
+ * Tcp Server
+ * 
+ * Copyright (c) 2016 Liming Shao <lmshao@163.com>
+ */
 #include <stdio.h>
-#include <unistd.h>
-#include <pthread.h>
-#include <sys/time.h>
+#include <stdlib.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <strings.h>
 
-#define SERVER_PORT 5555
-
-/*用于给线程传递参数*/
-struct mystr
-{
-    char *ip;
-    int port;
-    int client;
-};
-
-void recvdata();
+#define	LISTEN_NUM	5
+#define BUFF_SIZE	200
+#define SERVER_PORT	6666
 
 int main()
 {
-    int client;
-    int serverSocket;
-    pthread_t thread;
-    struct mystr info;
-    struct sockaddr_in serverAddr;
-    struct sockaddr_in clientAddr;
-    int addr_len = sizeof(clientAddr);
+    int servSocket, cliSocket;
+    struct sockaddr_in servAddr, cliAddr;
+	socklen_t addrLen = sizeof(cliAddr);
+	char buffer[BUFF_SIZE];
 
-    if((serverSocket = socket(AF_INET,SOCK_STREAM,0)) < 0)
+    if((servSocket = socket(AF_INET, SOCK_STREAM, 0)) < 0)
     {
-		perror("socket");
+		printf("socket err");
 		exit(1);
     }
 
-    bzero(&serverAddr,sizeof(serverAddr));
+    bzero(&servAddr,sizeof(servAddr));
     
-    serverAddr.sin_family =AF_INET;
-    serverAddr.sin_port = htons(SERVER_PORT);
-    serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
+    servAddr.sin_family	= AF_INET;
+    servAddr.sin_port = htons(SERVER_PORT);
+    servAddr.sin_addr.s_addr = htonl(INADDR_ANY);
     
-    if(bind(serverSocket,(struct sockaddr *)&serverAddr,sizeof(serverAddr)) < 0)
+    if(bind(servSocket,(struct sockaddr *)&servAddr,sizeof(servAddr)) < 0)
     {
-		perror("connect");
+		printf("bind err");
 		exit(1);
     }
-
-    if(listen(serverSocket,5)<0)
+	
+	printf("Listen Port: 6666\nListening ...\n");
+	
+    if(listen(servSocket, LISTEN_NUM) < 0)
     {
-		perror("listen");
+		printf("listen err");
 		exit(1);
     }
+	
     while(1)
     {
-        if((client = accept(serverSocket,(struct  sockaddr*)&clientAddr,(socklen_t*)&addr_len)) < 0)
+        if((cliSocket = accept(servSocket, (struct sockaddr*)&cliAddr, &addrLen)) < 0)
         {
-	     	perror("accept");
+	     	printf("accept err");
 	     	exit(1);
         }
 		
-	info.ip = inet_ntoa(clientAddr.sin_addr);
-	info.port = htons(clientAddr.sin_port);
-	info.client = client;
-	printf("\nAccept %s:%d\n\n", info.ip, info.port);
-    pthread_create(&thread,NULL,(void *)recvdata,&info);
-    }
-}
-
-void recvdata(void *arg)
-{
-    struct mystr *info;
-    info = (struct mystr *)arg;
-    int retval,Num;
-    char buffer[1024];
-	
-	struct timeval tv_now, tv_last, tv_begin;
-	gettimeofday(&tv_now, NULL);
-	tv_last = tv_now;
-	tv_begin = tv_now;
-	
-	float allData = 0, validData = 0;
-	long allDataSum = 0, validDataSum=0;
-	int n;
-	
-    while(1)
-    {
-		gettimeofday(&tv_now, NULL);
-		int one = (int) (tv_now.tv_sec - tv_last.tv_sec);
-		if( one > 0)
+		printf("\nConnect from %s:%d\n", inet_ntoa(cliAddr.sin_addr), ntohs(cliAddr.sin_port));
+		
+		while(1)
 		{
-			allData *=8;
-			validData *=8;
-			
-			if(allData >= 1024)
-				printf("\nReal-time Traffic: %.2f Kb/s, %.0f b/s, %d, Payload: %.2f Kb/s \n", allData/(1024*one), allData/one, n/one, validData/(1024*one) );
+			int Num = recv(cliSocket, buffer, sizeof(buffer), 0);
+		
+			if(Num < 0)
+			{
+				printf("recv err");
+				continue;
+			}
+			else if(Num == 0)
+			{
+				printf("Disconnect\n");
+				break;
+			}
 			else
-				printf("\nReal-time Traffic: %f b/s, %d, Payload: %f b/s \n",allData/one, n/one, validData/one );
-			
-			allDataSum += allData;
-			validDataSum += validData;
-			
-			int m = (int)(tv_now.tv_sec - tv_begin.tv_sec);
-			printf("Average Traffic: %ld Kb/s, Payload: %ld Kb/s\n, ", allDataSum/(1024*m), validDataSum/(1024*m));
-			
-			allData = 0;
-			validData = 0;
-			
-			n=0;
-			tv_last = tv_now;
+			{
+				printf("Recv Data is %s\n", buffer);
+			}
+
 		}
-		
-		Num = recv(info->client,buffer,sizeof(buffer),0);
-		
-		if(Num < 0)
-		{
-	    	perror("Recv");
-	    	continue;
-		}
-		else if(Num == 0)
-		{
-			printf("disconnect %s\n",info->ip);
-			break;
-		}
-		else
-		{
-			// printf("from Address: %s:%d, ",info->ip,info->port);
-			allData += (Num+56);
-			validData += Num;
-			n++;
-			// printf("%d ", (iDataNum+56));
-		    // printf("Recv Data is %s\n",buffer);
-		}
-    }
-    pthread_exit(&retval);
+	}
 }
