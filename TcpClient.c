@@ -1,6 +1,11 @@
 /*
  * Tcp Client
  * 
+ * int socket(int domain, int type, int protocol)
+ * int connect(int sockfd, struct sockaddr *servassr, int addrlen)
+ * int send(int socket, const void *buffer, int length, int flag)
+ * int inet_aton(const char *string, struct in_addr *addr);
+ * 
  * Copyright (c) 2016 Liming Shao <lmshao@163.com>
  */
  
@@ -41,7 +46,8 @@ int main(int argc, char *argv[])
 
     servAddr.sin_family = AF_INET;
     servAddr.sin_port = htons(SERVER_PORT);
-    servAddr.sin_addr.s_addr = inet_addr(SERVER_IP);	//need modefy
+//	servAddr.sin_addr.s_addr = inet_addr(SERVER_IP);	//Outdated method
+	inet_aton(SERVER_IP, &servAddr.sin_addr.s_addr);
     
     if(connect(cliSocket,(struct sockaddr *)&servAddr,sizeof(servAddr)) < 0)
     {

@@ -1,6 +1,11 @@
 /*
  * Tcp Server
  * 
+ * int socket(int domain, int type, int protocol)
+ * int bind(int sockfd, struct sockaddr *myaddr, int addrlen)
+ * int listen(int sockfd, int backlog)
+ * int accept(int sockfd, struct sockaddr *addr, int *addrlen)
+ * 
  * Copyright (c) 2016 Liming Shao <lmshao@163.com>
  */
  
