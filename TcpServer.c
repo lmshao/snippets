@@ -5,7 +5,9 @@
  * int bind(int sockfd, struct sockaddr *myaddr, int addrlen)
  * int listen(int sockfd, int backlog)
  * int accept(int sockfd, struct sockaddr *addr, int *addrlen)
- * 
+ * int recv(int socket, void *buffer, int length, int flag)
+ * char *inet_ntoa(struct in_addr in) 
+ *
  * Copyright (c) 2016 Liming Shao <lmshao@163.com>
  */
  
