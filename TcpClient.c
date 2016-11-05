@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 	char *SERVER_IP = DEFAULT_IP;
 	int SERVER_PORT = DEFAULT_PORT;
 	
-	if(argc >= 3)
+	if(argc > 3)
 		printf("param err:\nUsage: %s ip port | %s port | %s\n",argv[0],argv[0], argv[0]);
 	else if(argc == 3)
 	{

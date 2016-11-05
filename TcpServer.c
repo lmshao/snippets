@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
 		exit(1);
     }
 	
-	printf("Listen Port: 6666\nListening ...\n");
+	printf("Listen Port: %d\nListening ...\n", SERVER_PORT);
 	
     if(listen(servSocket, LISTEN_NUM) < 0)
     {
