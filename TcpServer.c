@@ -3,19 +3,28 @@
  * 
  * Copyright (c) 2016 Liming Shao <lmshao@163.com>
  */
+ 
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/socket.h>
+#include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <strings.h>
 
 #define	LISTEN_NUM	5
 #define BUFF_SIZE	200
-#define SERVER_PORT	6666
+#define DEFAULT_PORT	6666
 
-int main()
+int main(int argc, char *argv[])
 {
+	int SERVER_PORT = DEFAULT_PORT;
+	
+	if(argc > 2)
+		printf("param err:\nUsage: %s port | %s\n",argv[0], argv[0]);
+	if(argc == 2)
+		SERVER_PORT = atoi(argv[1]);		
+	
     int servSocket, cliSocket;
     struct sockaddr_in servAddr, cliAddr;
 	socklen_t addrLen = sizeof(cliAddr);
@@ -59,21 +68,21 @@ int main()
 		
 		while(1)
 		{
-			int Num = recv(cliSocket, buffer, sizeof(buffer), 0);
+			int num = recv(cliSocket, buffer, sizeof(buffer), 0);
 		
-			if(Num < 0)
+			if(num < 0)
 			{
 				printf("recv err");
 				continue;
 			}
-			else if(Num == 0)
+			else if(num == 0)
 			{
-				printf("Disconnect\n");
+				printf("\nDisconnect %s:%d\n", inet_ntoa(cliAddr.sin_addr), ntohs(cliAddr.sin_port));
 				break;
 			}
 			else
 			{
-				printf("Recv Data is %s\n", buffer);
+				printf("Recv: %s\nlength: %d\n\n", buffer, num);
 			}
 
 		}
