@@ -34,3 +34,8 @@
 
 build
 clean
+
+UdpClient
+UdpServer
+TcpClient
+TcpServer

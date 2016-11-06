@@ -17,7 +17,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
-#include <strings.h>
+#include <string.h>
 
 #define	LISTEN_NUM	5
 #define BUFF_SIZE	200

@@ -4,7 +4,7 @@
  * int socket(int domain, int type, int protocol)
  * int connect(int sockfd, struct sockaddr *servassr, int addrlen)
  * int send(int socket, const void *buffer, int length, int flag)
- * int inet_aton(const char *string, struct in_addr *addr);
+ * int inet_aton (const char *cp, struct in_addr *inp)
  * 
  * Copyright (c) 2016 Liming Shao <lmshao@163.com>
  */
@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
 #include <string.h>
 
 #define DEFAULT_IP		"127.0.0.1"
@@ -47,7 +48,7 @@ int main(int argc, char *argv[])
     servAddr.sin_family = AF_INET;
     servAddr.sin_port = htons(SERVER_PORT);
 //	servAddr.sin_addr.s_addr = inet_addr(SERVER_IP);	//Outdated method
-	inet_aton(SERVER_IP, &servAddr.sin_addr.s_addr);
+	inet_aton(SERVER_IP, &servAddr.sin_addr);
     
     if(connect(cliSocket,(struct sockaddr *)&servAddr,sizeof(servAddr)) < 0)
     {

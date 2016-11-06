@@ -3,6 +3,7 @@
  * 
  * int socket(int domain, int type, int protocol) 
  * int sendto(int socket, void *buffer, size_t size, int flags, struct sockaddr *to, size_t *addrlen)
+ * int inet_aton(const char *cp, struct in_addr *inp)
  *
  * Copyright (c) 2016 Liming Shao <lmshao@163.com>
  */
