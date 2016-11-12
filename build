@@ -1,8 +1,25 @@
 #!/bin/sh
-gcc -o UdpClient UdpClient.c
-gcc -o UdpServer UdpServer.c
-gcc -o TcpClient TcpClient.c
-gcc -o TcpServer TcpServer.c
-gcc -o ServerSelect ServerSelect.c
-gcc -o TcpClient_InputSend TcpClient_InputSend.c
-gcc -o UdpClient_InputSend UdpClient_InputSend.c
+for cfile in `ls *c | grep "^Thread"`
+do
+	file=${cfile%.c}
+	if [ -f $file ]
+	then
+		rm $file
+		gcc -o $file $cfile -lpthread
+	else
+		gcc -o $file $cfile -lpthread
+	fi	
+done
+
+for cfile in `ls *c | grep -v "^Thread"`
+do
+	file=${cfile%.c}
+	if [ -f $file ]
+	then
+		rm $file
+		gcc -o $file $cfile 
+	else
+		gcc -o $file $cfile
+	fi	
+done
+echo "build all"

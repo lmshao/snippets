@@ -1,8 +1,9 @@
 #!/bin/sh
-rm UdpClient
-rm UdpServer
-rm TcpClient
-rm TcpServer
-rm ServerSelect
-rm TcpClient_InputSend
-rm UdpClient_InputSend
+for cfile in `ls *c`
+do
+	file=${cfile%.c}
+	if [ -f $file ]
+	then
+		rm $file
+	fi
+done
