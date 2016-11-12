@@ -91,6 +91,7 @@ int main(int argc, char *argv[])
 			{
 				printf("Recv: %s\nlength: %d\n\n", buffer, num);
 			}
+			memset(buffer, 0, BUFF_SIZE);
 
 		}
 	}

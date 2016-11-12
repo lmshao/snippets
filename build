@@ -1,0 +1,8 @@
+#!/bin/sh
+gcc -o UdpClient UdpClient.c
+gcc -o UdpServer UdpServer.c
+gcc -o TcpClient TcpClient.c
+gcc -o TcpServer TcpServer.c
+gcc -o ServerSelect ServerSelect.c
+gcc -o TcpClient_InputSend TcpClient_InputSend.c
+gcc -o UdpClient_InputSend UdpClient_InputSend.c

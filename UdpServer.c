@@ -6,6 +6,9 @@
  * int recvfrom(int socket, void *buffer, size_t size, int flags, struct sockaddr *from, size_t *addrlen)
  * char *inet_ntoa(struct in_addr in)
  *
+ * Note:
+ * As a udp server, this program can accept multi-client connections simultaneously.
+ * 
  * Copyright (c) 2016 Liming Shao <lmshao@163.com>
  */
  
@@ -64,5 +67,6 @@ int main(int argc, char *argv[])
 		
 		printf("\nFrom %s:%d\n", inet_ntoa(cliAddr.sin_addr), ntohs(cliAddr.sin_port));
 		printf("Recv: %s\nlength: %d\n\n", buffer, nbytes);
+		memset(buffer, 0, BUFF_SIZE);
 	}
 }
