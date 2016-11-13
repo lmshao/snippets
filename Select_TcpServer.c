@@ -55,17 +55,17 @@ int main(int argc, char *argv[])
 	servAddr.sin_port = htons(SERVER_PORT);
 	servAddr.sin_addr.s_addr = htonl(INADDR_ANY);
     
-    if(bind(servSocket,(struct sockaddr *)&servAddr,sizeof(servAddr)) < 0)
-    {
+	if(bind(servSocket,(struct sockaddr *)&servAddr,sizeof(servAddr)) < 0)
+	{
 		printf("bind err");
 		exit(1);
-    }
+	}
 	
-    if(listen(servSocket, BACKLOG) < 0)
-    {
+	if(listen(servSocket, BACKLOG) < 0)
+	{
 		printf("listen err");
 		exit(1);
-    }
+	}
 	printf("Listen Port: %d\nListening ...\n", SERVER_PORT);
 	
 

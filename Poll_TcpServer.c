@@ -16,14 +16,12 @@
 #include <arpa/inet.h>
 #include <poll.h>
 #include <limits.h>
- 
 
 #define INFTIM		-1
 #define	BACKLOG 	5
 #define OPEN_MAX	1024
 #define	BUFF_SIZE	200
 #define DEFAULT_PORT	6666
-
 
 int main(int argc, char **argv)
 {
@@ -55,16 +53,16 @@ int main(int argc, char **argv)
 	servAddr.sin_addr.s_addr = htonl(INADDR_ANY);
 
 	if(bind(servSocket,(struct sockaddr *)&servAddr,sizeof(servAddr)) < 0)
-    {
+	{
 		printf("bind err");
 		exit(1);
-    }
+	}
 	
 	if(listen(servSocket, BACKLOG) < 0)
-    {
+	{
 		printf("listen err");
 		exit(1);
-    }
+	}
 	printf("Listen Port: %d\nListening ...\n", SERV_PORT);
 
 	client[0].fd = servSocket;
