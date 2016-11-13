@@ -17,8 +17,8 @@
 #include <sys/select.h>
 #include <sys/time.h>
 
-#define	BACKLOG 5
-#define BUFF_SIZE 200
+#define	BACKLOG 	5
+#define BUFF_SIZE 	200
 #define DEFAULT_PORT 6666
 
 typedef struct _CLIENT  
@@ -36,10 +36,13 @@ int main(int argc, char *argv[])
 	if(argc == 2)
 		SERVER_PORT = atoi(argv[1]);
     
-	int servSocket, cliSocket;
-    struct sockaddr_in servAddr, cliAddr;
-	socklen_t addrLen = sizeof(cliAddr);
-	char buffer[BUFF_SIZE];
+	int			i, maxi, maxfd, nready, nbytes;
+	int			servSocket, cliSocket;
+	fd_set 		allset, rset;
+	socklen_t	addrLen;
+	char 		buffer[BUFF_SIZE];
+	CLIENT 		client[FD_SETSIZE];		/* client info */
+	struct sockaddr_in servAddr, cliAddr;
 	
 	if((servSocket = socket(AF_INET, SOCK_STREAM, 0)) < 0)
 	{
@@ -65,11 +68,9 @@ int main(int argc, char *argv[])
     }
 	printf("Listen Port: %d\nListening ...\n", SERVER_PORT);
 	
-	fd_set allset, rset;
-	int	nready, nbytes;
-	int i, maxi = -1, maxfd = servSocket;
-	CLIENT client[FD_SETSIZE];		/* client info */
 
+	maxi = -1;
+	maxfd = servSocket;
 	for (i = 0; i < FD_SETSIZE; i++)
 		client[i].fd = -1;			/* -1 indicates available entry */
 	
@@ -96,6 +97,7 @@ int main(int argc, char *argv[])
 
 		if(FD_ISSET(servSocket, &rset))		/* new client connections */
 		{
+			addrLen = sizeof(cliAddr);
 			if((cliSocket = accept(servSocket, (struct sockaddr*)&cliAddr, &addrLen)) < 0)
 			{
 				printf("accept err");
