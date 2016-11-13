@@ -9,22 +9,22 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <netdb.h>
+#include <string.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <netdb.h>
-#include <string.h>
 #include <sys/select.h>
 #include <sys/time.h>
 
-#define	BACKLOG	5
-#define BUFF_SIZE	200
-#define DEFAULT_PORT	6666
+#define	BACKLOG 5
+#define BUFF_SIZE 200
+#define DEFAULT_PORT 6666
 
 typedef struct _CLIENT  
 {  
-    int fd;                     //客户端socket描述符   
-    struct sockaddr_in addr;    //客户端地址信息结构体     
+	int fd;		/* client's connection descriptor */  
+	struct sockaddr_in addr;	/* client's address */
 }CLIENT;
 
 int main(int argc, char *argv[])
@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 	int SERVER_PORT = DEFAULT_PORT;
 	
 	if(argc > 2)
-		printf("param err:\nUsage: %s port | %s\n",argv[0], argv[0]);
+		printf("param err:\nUsage:\n\t%s port | %s\n\n",argv[0], argv[0]);
 	if(argc == 2)
 		SERVER_PORT = atoi(argv[1]);
     
@@ -41,8 +41,8 @@ int main(int argc, char *argv[])
 	socklen_t addrLen = sizeof(cliAddr);
 	char buffer[BUFF_SIZE];
 	
-    if((servSocket = socket(AF_INET, SOCK_STREAM, 0)) < 0)
-    {
+	if((servSocket = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+	{
 		printf("socket err");
 		exit(1);
 	}
@@ -101,13 +101,13 @@ int main(int argc, char *argv[])
 				printf("accept err");
 				exit(1);
 			}
-		
+			
 			printf("\nNew client connections %s:%d\n", inet_ntoa(cliAddr.sin_addr), ntohs(cliAddr.sin_port));
 			
 			for (i = 0; i < FD_SETSIZE; i++)
-				if (client[i].fd < 0)
+				if (client[i].fd < 0)	/* save client info */
 				{
-					client[i].fd = cliSocket;		/* save descriptor */
+					client[i].fd = cliSocket;
 					client[i].addr = cliAddr;
 					break;
 				}
@@ -154,7 +154,7 @@ int main(int argc, char *argv[])
 					printf("Recv: %sLength: %d\n\n", buffer, nbytes);
 				}
 				if (--nready <= 0)
-					break;				/* no more readable descriptors */
+					break;		/* no more readable descriptors */
 			}
 		}
 	}
