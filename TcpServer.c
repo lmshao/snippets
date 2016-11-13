@@ -19,7 +19,7 @@
 #include <netdb.h>
 #include <string.h>
 
-#define	LISTEN_NUM	5
+#define	BACKLOG	5
 #define BUFF_SIZE	200
 #define DEFAULT_PORT	6666
 
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 	
 	printf("Listen Port: %d\nListening ...\n", SERVER_PORT);
 	
-    if(listen(servSocket, LISTEN_NUM) < 0)
+    if(listen(servSocket, BACKLOG) < 0)
     {
 		printf("listen err");
 		exit(1);
