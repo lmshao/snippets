@@ -1,4 +1,5 @@
 #!/bin/sh
+sed -i 's/\t/    /g' *.c
 for cfile in `ls *c | grep "^Thread"`
 do
 	file=${cfile%.c}
