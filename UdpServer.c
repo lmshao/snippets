@@ -19,54 +19,54 @@
 #include <arpa/inet.h>
 #include <string.h>
 
-#define BUFF_SIZE	200
-#define DEFAULT_PORT	6666
+#define BUFF_SIZE    200
+#define DEFAULT_PORT    6666
 
 int main(int argc, char *argv[])
 {
-	int SERVER_PORT = DEFAULT_PORT;
-	
-	if(argc > 2)
-		printf("param err:\nUsage: %s port | %s\n",argv[0], argv[0]);
-	if(argc == 2)
-		SERVER_PORT = atoi(argv[1]);		
-	
+    int SERVER_PORT = DEFAULT_PORT;
+    
+    if(argc > 2)
+        printf("param err:\nUsage: %s port | %s\n",argv[0], argv[0]);
+    if(argc == 2)
+        SERVER_PORT = atoi(argv[1]);        
+    
     int servSocket, nbytes;
     struct sockaddr_in servAddr, cliAddr;
-	int addrLen = sizeof(cliAddr);
-	
-	char buffer[BUFF_SIZE];
+    int addrLen = sizeof(cliAddr);
+    
+    char buffer[BUFF_SIZE];
 
     if((servSocket = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
     {
-		printf("socket err");
-		exit(1);
+        printf("socket err");
+        exit(1);
     }
 
     bzero(&servAddr,sizeof(servAddr));
     
-    servAddr.sin_family	= AF_INET;
+    servAddr.sin_family    = AF_INET;
     servAddr.sin_port = htons(SERVER_PORT);
     servAddr.sin_addr.s_addr = htonl(INADDR_ANY);
     
     if(bind(servSocket,(struct sockaddr *)&servAddr,sizeof(servAddr)) < 0)
     {
-		printf("bind err");
-		exit(1);
+        printf("bind err");
+        exit(1);
     }
-	
-	printf("Listen Port: %d\nListening ...\n", SERVER_PORT);
-	
+    
+    printf("Listen Port: %d\nListening ...\n", SERVER_PORT);
+    
     while(1)
     {
         if((nbytes = recvfrom(servSocket, buffer, sizeof(buffer), 0, (struct sockaddr*)&cliAddr, &addrLen)) < 0)
         {
-	     	printf("recvfrom err");
-	     	exit(1);
+             printf("recvfrom err");
+             exit(1);
         }
-		
-		printf("\nFrom %s:%d\n", inet_ntoa(cliAddr.sin_addr), ntohs(cliAddr.sin_port));
-		printf("Recv: %s\nlength: %d\n\n", buffer, nbytes);
-		memset(buffer, 0, BUFF_SIZE);
-	}
+        
+        printf("\nFrom %s:%d\n", inet_ntoa(cliAddr.sin_addr), ntohs(cliAddr.sin_port));
+        printf("Recv: %s\nlength: %d\n\n", buffer, nbytes);
+        memset(buffer, 0, BUFF_SIZE);
+    }
 }

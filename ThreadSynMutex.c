@@ -19,38 +19,38 @@ pthread_mutex_t mutex;
 
 void Func()
 {
-	for(; ;)
-	{
-		pthread_mutex_lock(&mutex);
-		if(mark)
-		{	
-			printf("Thread A: \t%d\n",count++);
-			mark = 0;
-			sleep(1);
-		}
-		pthread_mutex_unlock(&mutex);
-	}
+    for(; ;)
+    {
+        pthread_mutex_lock(&mutex);
+        if(mark)
+        {    
+            printf("Thread A: \t%d\n",count++);
+            mark = 0;
+            sleep(1);
+        }
+        pthread_mutex_unlock(&mutex);
+    }
 }
 
 int main()
 {
-	pthread_t p;
-	pthread_mutex_init(&mutex, NULL);
-	pthread_create(&p, NULL, (void *)&Func, NULL);
-	for(;;)
-	{
-		pthread_mutex_lock(&mutex);
-		
-		if(!mark)
-		{
-			printf("Thread B: %d\n", count++);
-			mark = 1;
-			sleep(1);
-		}
-		
-		pthread_mutex_unlock(&mutex);
-	}
-	/*
-	pthread_mutex_destory(&mutex);
-	*/
+    pthread_t p;
+    pthread_mutex_init(&mutex, NULL);
+    pthread_create(&p, NULL, (void *)&Func, NULL);
+    for(;;)
+    {
+        pthread_mutex_lock(&mutex);
+        
+        if(!mark)
+        {
+            printf("Thread B: %d\n", count++);
+            mark = 1;
+            sleep(1);
+        }
+        
+        pthread_mutex_unlock(&mutex);
+    }
+    /*
+    pthread_mutex_destory(&mutex);
+    */
 }
