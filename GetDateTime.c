@@ -76,7 +76,7 @@ int main()
 	/* seconds == tv.tv_sec */
 	printf("Seconds since the Epoch: %ld\n", tv.tv_sec);
 /*
-	printf("tv.tv_usec: %d\n", tv.tv_usec);
+	printf("tv.tv_usec: %d\n",tv.tv_usec);
 	printf("tz.tz_minuteswest: %d\n", tz.tz_minuteswest);
 	printf("tz.tz_dsttime: %d\n", tz.tz_dsttime);
 */
