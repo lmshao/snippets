@@ -13,6 +13,7 @@
 
 #include <stdio.h>
 #include <time.h>
+#include <sys/time.h>
 
 /* format: Fri Nov 25 21:06:21 2016 */
 void GetDateTime1(time_t sec)
@@ -61,7 +62,7 @@ int main()
 {
 	time_t seconds;
 	time(&seconds);		/*or use: seconds = time(NULL); */
-	printf("Seconds since the Epoch: %d\n\n", seconds);
+	printf("Seconds since the Epoch: %ld\n\n", seconds);
 	
 	GetDateTime1(seconds);
 	GetDateTime2(seconds);
@@ -73,7 +74,7 @@ int main()
 	gettimeofday(&tv, &tz);
 	
 	/* seconds == tv.tv_sec */
-	printf("Seconds since the Epoch: %d\n", tv.tv_sec);
+	printf("Seconds since the Epoch: %ld\n", tv.tv_sec);
 /*
 	printf("tv.tv_usec: %d\n", tv.tv_usec);
 	printf("tz.tz_minuteswest: %d\n", tz.tz_minuteswest);
