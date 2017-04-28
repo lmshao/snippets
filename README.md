@@ -1,12 +1,12 @@
 >My private code base.   
 >Linux C study notes.
 
-#1 UDP
-##1.1 UdpServer
+# 1 UDP
+## 1.1 UdpServer
 UDP服务器：可以同时接收多个客户端的数据。
-##1.2 UdpClient
+## 1.2 UdpClient
 UDP客户端：以1s间隔持续发送一个字符串。
-##1.3 UdpClient_InputSend
+## 1.3 UdpClient_InputSend
 UDP客户端：手动输入需要发送的字符串。
 
 #2 TCP
