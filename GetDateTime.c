@@ -33,7 +33,7 @@ void GetDateTime2(time_t sec)
 /* format: 2016-11-25 19:11:37 */
 void GetDateTime3(time_t sec)
 {
-    printf("GetDateTime3:\t");
+    printf("Local Time:\t");
     struct tm *dateTime = localtime(&sec);
     printf("%d-%02d-%02d %02d:%02d:%02d\n",
         dateTime->tm_year + 1900,
@@ -47,7 +47,7 @@ void GetDateTime3(time_t sec)
 /* format: 2016-11-25 11:11:37 */
 void GetDateTime4(time_t sec)
 {
-    printf("GetDateTime4:\t");
+    printf("UTC Time:\t");
     struct tm *dateTime = gmtime(&sec);
     printf("%d-%02d-%02d %02d:%02d:%02d\n\n",
         dateTime->tm_year + 1900,
