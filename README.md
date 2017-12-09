@@ -16,6 +16,10 @@ TCP服务器：同时只能接受一个客户端的请求。
 TCP客户端：以1s间隔持续发送一个字符串。
 ## 2.3 TcpClient_InputSend
 TCP客户端：手动输入需要发送的字符串。
+## 2.4 TcpServer_InputSendRecv
+TCP服务器：接收数据的同时也可以发送数据。
+## 2.5 TcpClient_InputSendRecv
+TCP客户端：发送数据的同时也可以接收数据。
 
 # 3 Thread Synchronization
 ## 3.1 ThreadSynMutex
