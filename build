@@ -23,4 +23,4 @@ do
 		gcc -o $file $cfile
 	fi	
 done
-echo "build all"
+echo "build all "
