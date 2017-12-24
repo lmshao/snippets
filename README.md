@@ -37,6 +37,11 @@ select函数的timeout位有三种设置：1.阻塞型设为NULL；2.设置非�
 此程序通过poll函数实现可以同时接收多个客户端连接的TCP服务器。   
 select函数的timeout位有三种设置：1.阻塞型设为-1；2.设置非零时间，等待一段时间ms；3.轮询不等待，时间设为0。
 
-# 5 杂项
-## 5.1 GetDateTime
+## 5 IPC 进程间通信
+## 5.1 IPC-MessageQueue_SND & IPC-MessageQueue_RCV
+此程序使用消息队列进行进程间通信，IPC-MessageQueue_SND负责接收输入消息并发送，IPC-MessageQueue_RCV负责接收SND进程发送的消息。   
+注意：一定要设置消息类型。
+
+# 6 杂项
+## 6.1 GetDateTime
 获取并处理日期和时间的函数。
