@@ -9,15 +9,18 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <netdb.h>
 #include <string.h>
+#include <unistd.h>
+
+#include <netdb.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+
 #include <sys/select.h>
 #include <sys/time.h>
 
-#define    BACKLOG     5
+#define BACKLOG         5
 #define BUFF_SIZE     200
 #define DEFAULT_PORT 6666
 
@@ -36,12 +39,12 @@ int main(int argc, char *argv[])
     if(argc == 2)
         SERVER_PORT = atoi(argv[1]);
     
-    int            i, maxi, maxfd, nready, nbytes;
-    int            servSocket, cliSocket;
-    fd_set         allset, rset;
-    socklen_t    addrLen;
-    char         buffer[BUFF_SIZE];
-    CLIENT         client[FD_SETSIZE];        /* client info */
+    int i, maxi, maxfd, nready, nbytes;
+    int servSocket, cliSocket;
+    fd_set allset, rset;
+    socklen_t addrLen;
+    char buffer[BUFF_SIZE];
+    CLIENT client[FD_SETSIZE];        /* client info */
     struct sockaddr_in servAddr, cliAddr;
     
     if((servSocket = socket(AF_INET, SOCK_STREAM, 0)) < 0)
@@ -51,8 +54,8 @@ int main(int argc, char *argv[])
     }
 
     bzero(&servAddr,sizeof(servAddr));
-    servAddr.sin_family    = AF_INET;
-    servAddr.sin_port = htons(SERVER_PORT);
+    servAddr.sin_family      = AF_INET;
+    servAddr.sin_port        = htons(SERVER_PORT);
     servAddr.sin_addr.s_addr = htonl(INADDR_ANY);
     
     if(bind(servSocket,(struct sockaddr *)&servAddr,sizeof(servAddr)) < 0)
@@ -68,7 +71,6 @@ int main(int argc, char *argv[])
     }
     printf("Listen Port: %d\nListening ...\n", SERVER_PORT);
     
-
     maxi = -1;
     maxfd = servSocket;
     for (i = 0; i < FD_SETSIZE; i++)
