@@ -1,6 +1,6 @@
 #!/bin/sh
 sed -i 's/\t/    /g' *.c
-for cfile in `ls *c | grep "^Thread"`
+for cfile in `ls *c `
 do
 	file=${cfile%.c}
 	if [ -f $file ]
@@ -9,18 +9,6 @@ do
 		gcc -o $file $cfile -lpthread
 	else
 		gcc -o $file $cfile -lpthread
-	fi	
-done
-
-for cfile in `ls *c | grep -v "^Thread"`
-do
-	file=${cfile%.c}
-	if [ -f $file ]
-	then
-		rm $file
-		gcc -o $file $cfile 
-	else
-		gcc -o $file $cfile
 	fi	
 done
 echo "build all "
