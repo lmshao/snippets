@@ -7,6 +7,7 @@
 
 #include <condition_variable>
 #include <functional>
+#include <map>
 #include <memory>
 #include <mutex>
 #include <string>
@@ -14,45 +15,49 @@
 
 class TimeoutTimer {
 public:
-    TimeoutTimer();
+    explicit TimeoutTimer(const std::string &info = "TimeoutTimer");
     virtual ~TimeoutTimer();
 
     void SetTimeoutCallback(std::function<void()> callback) { callback_ = std::move(callback); }
 
-    void AddTask(int timeout, std::string name = "none", std::function<void()> callback = nullptr);
-    void CancelTask();
+    uint64_t AddTask(int timeout, std::string name = "none", const std::function<void()> &callback = nullptr);
+    void CancelTask(uint64_t taskId = ~0llu /*cancel all tasks*/);
 
 private:
     void MainLoop();
 
     // for testing
-    std::string GetTime();
+    static std::string GetTime();
 
 private:
     enum State {
         INIT,
         WAITING,
         WORKING,
-        CANCELLED,
         EXITED
     };
 
-    int timeout_ = 0;
     State state_ = INIT;
-    std::string taskName_;
 
     std::mutex operateMutex_;
     std::mutex taskMutex_;
     std::condition_variable taskSignal_;
 
-    std::mutex cancelMutex_;
-    std::condition_variable cancelSignal_;
-
-    std::mutex waitMutex_;
-    std::condition_variable waitSignal_;
+    std::mutex updateMutex_;
+    std::condition_variable updateSignal_;
 
     std::function<void()> callback_;
     std::unique_ptr<std::thread> thread_;
+
+    using TimePoint = std::chrono::time_point<std::chrono::system_clock, std::chrono::nanoseconds>;
+
+    struct Task {
+        uint64_t id;
+        std::string name;
+        std::function<void()> callback;
+    };
+
+    std::map<TimePoint, Task> tasks_;
 };
 
 #endif // _TIMEOUT_TIMER_H
